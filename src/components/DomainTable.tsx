@@ -1,16 +1,12 @@
-import { Table, TableProps } from "antd";
+import { Alert, Table, TableProps } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import ActionMenu from "./ActionMenu";
+import { useGetDomainsQuery } from "../features/domainApi";
+import { DomainDataType } from "../types";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
-export interface DataType {
-  _id: string;
-  domain: string;
-  isActive: boolean;
-  status: "pending" | "verified" | "rejected";
-  more: string;
-}
-
-const columns: TableProps<DataType>["columns"] = [
+const columns: TableProps<DomainDataType>["columns"] = [
   {
     title: "Domain URL",
     className: "font-normal text-gray-500 bg-transparent",
@@ -69,38 +65,64 @@ const columns: TableProps<DataType>["columns"] = [
   },
 ];
 
-const data: DataType[] = [
-  {
-    _id: "1",
-    domain: "https://dash.getsitecontrol.com/sites/256247/dashboard",
-    isActive: true,
-    status: "pending",
-    more: "",
-  },
-  {
-    _id: "2",
-    domain: "https://foxnews.uk/",
-    isActive: false,
-    status: "verified",
-    more: "",
-  },
-  {
-    _id: "3",
-    domain: "https://analytics.google.com/analytics/web/",
-    isActive: false,
-    status: "rejected",
-    more: "",
-  },
-];
+// const data: DataType[] = [
+//   {
+//     _id: "1",
+//     domain: "https://dash.getsitecontrol.com/sites/256247/dashboard",
+//     isActive: true,
+//     status: "pending",
+//     more: "",
+//   },
+//   {
+//     _id: "2",
+//     domain: "https://foxnews.uk/",
+//     isActive: false,
+//     status: "verified",
+//     more: "",
+//   },
+//   {
+//     _id: "3",
+//     domain: "https://analytics.google.com/analytics/web/",
+//     isActive: false,
+//     status: "rejected",
+//     more: "",
+//   },
+// ];
 
-const DomainTable = () => (
-  <Table<DataType>
-    columns={columns}
-    pagination={false}
-    // bordered={true}
-    scroll={{ x: 800 }}
-    dataSource={data}
-  />
-);
+const DomainTable = () => {
+  const { data, error, isLoading } = useGetDomainsQuery(undefined);
+
+  const { searchTerm, sortBy } = useSelector(
+    (state: RootState) => state.domainFilter
+  );
+
+  if (error)
+    return (
+      <Alert
+        message="There is a problem in loading the domains"
+        type="error"
+        className="text-center"
+      />
+    );
+
+  let sortedData = data;
+  sortedData = sortedData
+    ?.filter((domainObj) => domainObj.domain.includes(searchTerm))
+    .sort((a, b) => {
+      if (sortBy === "asc") return a.createdDate - b.createdDate;
+      return b.createdDate - a.createdDate;
+    });
+
+  return (
+    <Table<DomainDataType>
+      loading={isLoading}
+      columns={columns}
+      pagination={false}
+      // bordered={true}
+      scroll={{ x: 800 }}
+      dataSource={sortedData}
+    />
+  );
+};
 
 export default DomainTable;

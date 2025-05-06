@@ -7,6 +7,7 @@ type ButtonProps = {
   className?: string;
   icon?: ReactNode;
   type?: "submit" | "button" | "reset";
+  disabled?: boolean;
 };
 
 export default function ButtonComponent({
@@ -15,16 +16,18 @@ export default function ButtonComponent({
   className,
   icon,
   type,
+  disabled,
 }: ButtonProps) {
   return (
     <Button
-      className={`${className} rounded-sm bg-blue-400 px-10 py-6`}
+      className={`${className} rounded-sm bg-blue-400 `}
       onClick={handler}
       color="primary"
       variant="solid"
       size="large"
       icon={icon}
       htmlType={type}
+      disabled={disabled}
     >
       {text}
     </Button>

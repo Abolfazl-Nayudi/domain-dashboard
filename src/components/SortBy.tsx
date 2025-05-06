@@ -1,11 +1,16 @@
 import { Select } from "antd";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { setSortBy } from "../features/filterSlice";
+import { SortByCriteriaType } from "../types";
 
 const SortBy = () => {
   console.log("hi");
 
-  const handleChange = (value: string) => {
-    console.log(value);
+  const dispatch = useDispatch();
+
+  const handleChange = (value: SortByCriteriaType) => {
+    dispatch(setSortBy(value));
   };
 
   return (
