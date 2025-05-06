@@ -65,30 +65,6 @@ const columns: TableProps<DomainDataType>["columns"] = [
   },
 ];
 
-// const data: DataType[] = [
-//   {
-//     _id: "1",
-//     domain: "https://dash.getsitecontrol.com/sites/256247/dashboard",
-//     isActive: true,
-//     status: "pending",
-//     more: "",
-//   },
-//   {
-//     _id: "2",
-//     domain: "https://foxnews.uk/",
-//     isActive: false,
-//     status: "verified",
-//     more: "",
-//   },
-//   {
-//     _id: "3",
-//     domain: "https://analytics.google.com/analytics/web/",
-//     isActive: false,
-//     status: "rejected",
-//     more: "",
-//   },
-// ];
-
 const DomainTable = () => {
   const { data, error, isLoading } = useGetDomainsQuery(undefined);
 

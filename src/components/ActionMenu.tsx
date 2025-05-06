@@ -14,10 +14,7 @@ type MenuItem = Required<MenuProps>["items"][number];
 
 const ActionMenu = ({ record }: { record: DomainDataType }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  // const [drawerData, setdrawerData] = useState<DomainDataType | undefined>(
-  //   undefined
-  // );
-  // RTK Query hooks
+
   const [deleteDomain] = useDeleteDomainMutation();
   const [updateDomain] = useUpdateDomainMutation();
 
@@ -43,7 +40,6 @@ const ActionMenu = ({ record }: { record: DomainDataType }) => {
                 record?.status === "pending" || record?.status === "rejected"
                   ? "Verify"
                   : "Reject",
-              // disabled: record.status === "verified" ? true : false,
               className: `font-semibold `,
               onClick: async () => {
                 const textCondition =

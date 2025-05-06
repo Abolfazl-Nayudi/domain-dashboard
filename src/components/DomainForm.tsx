@@ -83,18 +83,12 @@ const DomainForm = ({ setIsDrawerOpen, type, domainData }: ComponentProps) => {
     }
   };
 
-  // const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-  //   errorInfo
-  // ) => {
-  //   console.log("Failed:", errorInfo);
-  // };
   if (type === "edit") {
     return (
       <Form
         className="h-full flex  flex-col justify-between"
         initialValues={{ domain: domainData?.domain }}
         onFinish={onFinish}
-        // onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item<FieldType>
@@ -107,11 +101,7 @@ const DomainForm = ({ setIsDrawerOpen, type, domainData }: ComponentProps) => {
             },
           ]}
         >
-          <Input
-            placeholder="Ex: https://www.bridged.media"
-            className="py-3"
-            // defaultValue={domainData?.domain}
-          />
+          <Input placeholder="Ex: https://www.bridged.media" className="py-3" />
         </Form.Item>
 
         <Form.Item label={null} className="flex justify-end ">
@@ -139,7 +129,6 @@ const DomainForm = ({ setIsDrawerOpen, type, domainData }: ComponentProps) => {
       <Form
         className="h-full flex  flex-col justify-between"
         onFinish={onFinish}
-        // onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item<FieldType>
