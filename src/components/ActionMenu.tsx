@@ -40,14 +40,14 @@ const ActionMenu = ({ record }: { record: DomainDataType }) => {
             {
               key: "2",
               label:
-                record.status === "pending" || record.status === "rejected"
+                record?.status === "pending" || record?.status === "rejected"
                   ? "Verify"
                   : "Reject",
               // disabled: record.status === "verified" ? true : false,
               className: `font-semibold `,
               onClick: async () => {
                 const textCondition =
-                  record.status === "pending" || record.status === "rejected";
+                  record?.status === "pending" || record?.status === "rejected";
 
                 showMessage(
                   "update",
@@ -81,12 +81,12 @@ const ActionMenu = ({ record }: { record: DomainDataType }) => {
             },
             {
               key: "3",
-              label: `${record.isActive ? "Deactivate" : "Activate"}`,
+              label: `${record?.isActive ? "Deactivate" : "Activate"}`,
               className: "font-semibold",
               onClick: async () => {
                 showMessage("update", "loading", "domain is activating");
                 const { data, error } = await updateDomain({
-                  id: record.id,
+                  id: record?.id,
                   isActive: !record.isActive,
                 });
                 message.destroy("update");
