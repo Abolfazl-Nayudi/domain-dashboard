@@ -7,3 +7,5 @@ export interface DomainDataType {
 }
 
 export type SortByCriteriaType = "asc" | "desc";
+
+export type DomainFormType = "add" | "edit";

@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { MoreOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu, message } from "antd";
@@ -7,38 +6,20 @@ import {
   useUpdateDomainMutation,
 } from "../features/domainApi";
 import { DomainDataType } from "../types";
-import { NoticeType } from "antd/es/message/interface";
+import { useState } from "react";
+import DomainDrawer from "./DomainDrawer";
+import { destoryMessage, showMessage } from "../utility/messagePopupUtils";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
-const showMessage = (
-  key: string,
-  type: NoticeType,
-  content: string,
-  duration?: number
-) => {
-  console.log(key, duration);
-
-  message.open({
-    key,
-    type,
-    content,
-    duration,
-  });
-};
-
 const ActionMenu = ({ record }: { record: DomainDataType }) => {
-  // antd message
-
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  // const [drawerData, setdrawerData] = useState<DomainDataType | undefined>(
+  //   undefined
+  // );
   // RTK Query hooks
-  const [
-    deleteDomain,
-    { isLoading: deleteLoading, error: deleteError, isSuccess: deleteSuccess },
-  ] = useDeleteDomainMutation();
-  const [
-    updateDomain,
-    { isLoading: updateLoading, error: updateError, isSuccess: updateSuccess },
-  ] = useUpdateDomainMutation();
+  const [deleteDomain] = useDeleteDomainMutation();
+  const [updateDomain] = useUpdateDomainMutation();
 
   const items: MenuItem[] = [
     {
@@ -58,14 +39,24 @@ const ActionMenu = ({ record }: { record: DomainDataType }) => {
             },
             {
               key: "2",
-              label: "Verify",
-              disabled: record.status === "verified" ? true : false,
-              className: "font-semibold",
+              label:
+                record.status === "pending" || record.status === "rejected"
+                  ? "Verify"
+                  : "Reject",
+              // disabled: record.status === "verified" ? true : false,
+              className: `font-semibold `,
               onClick: async () => {
-                showMessage("update", "loading", "domain is verifying");
+                const textCondition =
+                  record.status === "pending" || record.status === "rejected";
+
+                showMessage(
+                  "update",
+                  "loading",
+                  `domain is ${textCondition ? "verifying" : "rejecting"}`
+                );
                 const { data, error } = await updateDomain({
                   id: record.id,
-                  status: "verified",
+                  status: textCondition ? "verified" : "rejected",
                 });
                 message.destroy("update");
 
@@ -73,7 +64,8 @@ const ActionMenu = ({ record }: { record: DomainDataType }) => {
                   showMessage(
                     "updaate-error",
                     "error",
-                    "there is a problem in verifying the domain"
+                    "there is a problem in verifying the domain",
+                    2
                   );
                 }
 
@@ -81,21 +73,62 @@ const ActionMenu = ({ record }: { record: DomainDataType }) => {
                   showMessage(
                     "updaate-success",
                     "success",
-                    "domain verified successfully"
+                    `domain ${data.status} successfully`,
+                    2
                   );
                 }
               },
             },
-            { key: "3", label: "install script", disabled: true },
             {
-              key: "4",
+              key: "3",
+              label: `${record.isActive ? "Deactivate" : "Activate"}`,
+              className: "font-semibold",
+              onClick: async () => {
+                showMessage("update", "loading", "domain is activating");
+                const { data, error } = await updateDomain({
+                  id: record.id,
+                  isActive: !record.isActive,
+                });
+                message.destroy("update");
+
+                if (error) {
+                  showMessage(
+                    "updaate-error",
+                    "error",
+                    "there is a problem in activating the domain"
+                  );
+                }
+
+                if (data) {
+                  showMessage(
+                    "updaate-success",
+                    "success",
+                    `domain ${
+                      record.isActive ? "deactivated" : "activated"
+                    } successfully`
+                  );
+                }
+              },
+            },
+
+            { key: "4", label: "install script", disabled: true },
+            {
+              key: "5",
+              label: "Edit",
+              className: "text-blue-500 font-semibold",
+              onClick: () => {
+                setIsDrawerOpen(true);
+              },
+            },
+            {
+              key: "6",
               label: "Delete",
               className: "text-red-500 font-semibold",
               onClick: async () => {
-                showMessage("delete", "loading", "deleting the domain");
+                showMessage("delete-loading", "loading", "deleting the domain");
 
                 const { data, error } = await deleteDomain(record.id);
-                message.destroy("delete");
+                destoryMessage("delete-loading");
 
                 if (error) {
                   showMessage(
@@ -130,6 +163,12 @@ const ActionMenu = ({ record }: { record: DomainDataType }) => {
         items={items}
         expandIcon={false}
         selectable={false}
+      />
+      <DomainDrawer
+        isDrawerOpen={isDrawerOpen}
+        setIsDrawerOpen={setIsDrawerOpen}
+        type="edit"
+        domainData={record}
       />
     </>
   );

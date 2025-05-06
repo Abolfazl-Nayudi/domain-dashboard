@@ -119,6 +119,7 @@ const DomainTable = () => {
       columns={columns}
       pagination={false}
       // bordered={true}
+      rowKey={"id"}
       scroll={{ x: 800 }}
       dataSource={sortedData}
     />

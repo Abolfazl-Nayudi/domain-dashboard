@@ -5,8 +5,6 @@ import { setSortBy } from "../features/filterSlice";
 import { SortByCriteriaType } from "../types";
 
 const SortBy = () => {
-  console.log("hi");
-
   const dispatch = useDispatch();
 
   const handleChange = (value: SortByCriteriaType) => {
