@@ -59,7 +59,7 @@ const columns: TableProps<DomainDataType>["columns"] = [
     key: "more",
     dataIndex: "more",
     className: "flex justify-end bg-transparent text-transparent",
-    render: (value, record) => {
+    render: (record) => {
       return <ActionMenu record={record} />;
     },
   },

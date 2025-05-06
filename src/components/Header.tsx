@@ -1,5 +1,5 @@
 import { Col, Row, Typography } from "antd";
-import React, { useState } from "react";
+import { useState } from "react";
 import DomainDrawer from "./DomainDrawer";
 import SortBy from "./SortBy";
 import SearchInput from "./SearchInput";
