@@ -1,8 +1,8 @@
 {
-  "name": "domain-project",
+  "name": "domain-dashboard",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://abolfazl-nayudi.github.io/domain-project",
+  "homepage": "https://abolfazl-nayudi.github.io/domain-dashboard",
   "type": "module",
   "scripts": {
     "dev": "vite",
