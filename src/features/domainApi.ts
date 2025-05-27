@@ -39,6 +39,8 @@ export const domainApi = createApi({
   }),
 });
 
+console.log(domainApi);
+
 export const {
   useGetDomainsQuery,
   useAddDomainMutation,
