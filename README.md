@@ -1,4 +1,4 @@
-# Frontend Assesment Project
+# Domain Dashboard Project
 
 API : if you wanna run this project you have to have an api with below schema
 
